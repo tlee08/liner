@@ -1,0 +1,47 @@
+[tool.poetry]
+name = "liner"
+version = "0.1.0"
+description = "Generic Python data science pipeline helper functions"
+authors = ["BowenLab"]
+license = "LGPL-3.0-or-later"
+readme = "README.md"
+homepage = "https://tlee08.github.io/liner"
+repository = "https://github.com/tlee08/liner"
+documentation = "https://tlee08.github.io/liner"
+packages = [{ include = "liner" }]
+
+[tool.poetry.dependencies]
+# Python version
+python = "~3.12"
+# Data structs
+pydantic = "^2.7.0"
+tables = "^3.10.1"
+pyarrow = "^18.0.0"
+# Data processing
+numpy = "^1.26.4"
+pandas = "^2.2.2"
+scipy = "^1.13.0"
+# Data visualisation
+opencv-python = "^4.9.0.80"
+seaborn = "^0.13.2"
+natsort = "^8.4.0"
+# Templates
+Jinja2 = "^3.1.4"
+# Multiprocessing
+dask = { extras = ["complete"], version = "^2024.10.0" }
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.4.8"
+mkdocs-material = "^9.5.18"
+mkdocstrings-python = "^1.9.2"
+pytest = "^8.3.3"
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.format]
+docstring-code-format = true
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
