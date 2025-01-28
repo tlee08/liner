@@ -3,8 +3,7 @@ import logging
 import os
 import sys
 
-from behavysis_pipeline.constants import CACHE_DIR
-from behavysis_pipeline.utils.misc_utils import get_func_name_in_stack
+from liner.misc_utils import get_func_name_in_stack
 
 LOG_FORMAT = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 LOG_IO_OBJ_FORMAT = "%(levelname)s - %(message)s"
@@ -29,14 +28,14 @@ def add_console_handler(logger: logging.Logger, level: int = logging.DEBUG) -> N
     logger.addHandler(console_handler)
 
 
-def add_log_file_handler(logger: logging.Logger, level: int = logging.DEBUG) -> str:
+def add_log_file_handler(logger: logging.Logger, cache_dir: str, level: int = logging.DEBUG) -> str:
     """
     If logger does not have a file handler,
     create a file handler and add it to the logger.
 
     Returns the log filepath.
     """
-    log_fp = os.path.join(CACHE_DIR, "debug.log")
+    log_fp = os.path.join(cache_dir, "debug.log")
     # Checking if logger has a file handler
     for handler in logger.handlers:
         if isinstance(handler, logging.FileHandler):
@@ -73,10 +72,11 @@ def add_io_obj_handler(logger: logging.Logger, level: int = logging.INFO) -> io.
 
 
 def init_logger(
-    name: str | None = None,
-    console_level: int | None = None,
-    file_level: int | None = None,
-    io_obj_level: int | None = None,
+    name: str,
+    cache_dir: str,
+    console_level: int | None,
+    file_level: int | None,
+    io_obj_level: int | None,
 ) -> logging.Logger:
     """
     Setup logging configuration.
@@ -89,13 +89,13 @@ def init_logger(
     - io.StringIO object
     """
     # Creating logger
-    logger = logging.getLogger(name or get_func_name_in_stack(2))
+    logger = logging.getLogger(name)
     logger.setLevel(logging.DEBUG)
     # Adding handlers
     if console_level is not None:
         add_console_handler(logger, console_level)
     if file_level is not None:
-        add_log_file_handler(logger, file_level)
+        add_log_file_handler(logger, cache_dir, file_level)
     if io_obj_level is not None:
         add_io_obj_handler(logger, io_obj_level)
     return logger
@@ -103,6 +103,7 @@ def init_logger(
 
 def init_logger_console(
     name: str | None = None,
+    cache_dir: str = ".liner",
     console_level: int = logging.DEBUG,
 ) -> logging.Logger:
     """
@@ -111,12 +112,14 @@ def init_logger_console(
     """
     return init_logger(
         name=name or get_func_name_in_stack(2),
+        cache_dir=cache_dir,
         console_level=console_level,
     )
 
 
 def init_logger_file(
     name: str | None = None,
+    cache_dir: str = ".liner",
     console_level: int = logging.DEBUG,
     file_level: int = logging.DEBUG,
 ) -> logging.Logger:
@@ -127,6 +130,7 @@ def init_logger_file(
     """
     return init_logger(
         name=name or get_func_name_in_stack(2),
+        cache_dir=cache_dir,
         console_level=console_level,
         file_level=file_level,
     )
@@ -134,6 +138,7 @@ def init_logger_file(
 
 def init_logger_io_obj(
     name: str | None = None,
+    cache_dir: str = ".liner",
     console_level: int = logging.DEBUG,
     file_level: int = logging.DEBUG,
     io_obj_level: int = logging.INFO,
@@ -146,6 +151,7 @@ def init_logger_io_obj(
     """
     logger = init_logger(
         name=name or get_func_name_in_stack(2),
+        cache_dir=cache_dir,
         console_level=console_level,
         file_level=file_level,
         io_obj_level=io_obj_level,

@@ -6,7 +6,7 @@ import os
 
 from pydantic import BaseModel, ConfigDict
 
-from behavysis_pipeline.utils.io_utils import read_json, write_json
+from liner.io_utils import read_json, write_json
 
 
 class PydanticBaseModel(BaseModel):

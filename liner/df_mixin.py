@@ -6,7 +6,8 @@ import os
 from enum import Enum, EnumType
 
 import pandas as pd
-from behavysis_pipeline.utils.misc_utils import enum2tuple
+
+from liner.misc_utils import enum2tuple
 
 
 class DfStruct:

@@ -5,9 +5,9 @@ Utility functions.
 import os
 from typing import Any
 
-from behavysis_pipeline.utils.diagnostics_utils import file_exists_msg
-from behavysis_pipeline.utils.io_utils import check_files_exist
 from jinja2 import Environment, PackageLoader
+
+from liner.io_utils import check_files_exist
 
 
 def render_template(tmpl_name: str, pkg_name: str, pkg_subdir: str, **kwargs: Any) -> str:
@@ -64,6 +64,9 @@ def import_static_templates_script(
         dst_fp = os.path.join(root_dir, template_fp)
         if not overwrite and check_files_exist(dst_fp):
             # Check if we should skip importing (i.e. overwrite is False and file exists)
-            print(file_exists_msg(dst_fp))
+            print(
+                f"Output file, '{dst_fp}' already exists - not overwriting file.\n"
+                "To overwrite, specify `overwrite=True`.\n"
+            )
             continue
         save_template(template_fp, pkg_name, pkg_subdir, dst_fp)
